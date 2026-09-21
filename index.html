@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: white;
+}
+
+h1 {
+  text-align: center;
+  font-size: 28px;
+  margin: 30px 0;
+}
+
+/* 1段分 */
+.row {
+  height: 250px;
+  border-top: 2px solid #999;
+  border-bottom: 2px solid #999;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 0 30px;
+}
+
+/* 棒 */
+.rod {
+  position: relative;
+  width: 8px;
+  height: 190px;
+  background: #888;
+}
+
+/* 動かす四角 */
+.light {
+  position: absolute;
+
+  width: 50px;
+  height: 20px;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  touch-action: none;
+  cursor: grab;
+
+  z-index: 10;
+}
+
+.light:active {
+  cursor: grabbing;
+}
+
+.red {
+  background: #d93636;
+}
+
+.blue {
+  background: #174a9c;
+}
+
+.green {
+  background: #008c67;
+}
+
+.white {
+  background: white;
+  border: 1px solid black;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<h1>ライト練習用</h1>
+
+
+<!-- 1段目 -->
+<div class="row">
+
+  <div class="rod">
+    <div class="light red"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light blue"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light green"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light white"></div>
+  </div>
+
+  <div class="rod"></div>
+
+  <div class="rod"></div>
+
+  <div class="rod">
+    <div class="light white"></div>
+  </div>
+
+</div>
+
+
+<!-- 2段目 -->
+<div class="row">
+
+  <div class="rod">
+    <div class="light red"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light blue"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light green"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light white"></div>
+  </div>
+
+  <div class="rod"></div>
+
+  <div class="rod"></div>
+
+  <div class="rod">
+    <div class="light white"></div>
+  </div>
+
+</div>
+
+
+<!-- 3段目 -->
+<div class="row">
+
+  <div class="rod">
+    <div class="light red"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light blue"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light green"></div>
+  </div>
+
+  <div class="rod">
+    <div class="light white"></div>
+  </div>
+
+  <div class="rod"></div>
+
+  <div class="rod"></div>
+
+  <div class="rod">
+    <div class="light white"></div>
+  </div>
+
+</div>
+
+
+<script>
+
+const lights = document.querySelectorAll(".light");
+
+
+lights.forEach(function(light) {
+
+  let moving = false;
+
+
+  /* 四角を押した */
+  light.addEventListener("pointerdown", function(e) {
+
+    moving = true;
+
+    light.setPointerCapture(e.pointerId);
+
+    e.preventDefault();
+
+  });
+
+
+  /* 四角を動かしている */
+  light.addEventListener("pointermove", function(e) {
+
+    if (!moving) return;
+
+
+    const rod = light.parentElement;
+
+    const rect = rod.getBoundingClientRect();
+
+
+    /* 棒の上から何pxの位置か */
+    let y = e.clientY - rect.top;
+
+
+    /* 四角の高さ */
+    const half = light.offsetHeight / 2;
+
+
+    /* 棒からはみ出さない */
+    if (y < half) {
+      y = half;
+    }
+
+    if (y > rect.height - half) {
+      y = rect.height - half;
+    }
+
+
+    /* 移動 */
+    light.style.top = y + "px";
+
+  });
+
+
+  /* 指を離した */
+  light.addEventListener("pointerup", function() {
+
+    moving = false;
+
+  });
+
+
+  light.addEventListener("pointercancel", function() {
+
+    moving = false;
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
